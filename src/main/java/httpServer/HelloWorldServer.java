@@ -2,6 +2,7 @@ package httpServer;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class HelloWorldServer extends SocketProcessor {
 
@@ -17,6 +18,111 @@ public class HelloWorldServer extends SocketProcessor {
 
     // посылаем ответ клиенту через OutputStream
     @Override
+    protected void sendResponse2(HttpRequest httpRequest, OutputStream os) {
+
+        String inputFileName = "C:\\projects\\HttpServer3\\src\\main\\resources\\static\\pic1.jpg";
+
+        ArrayList<Byte> bytes = new ArrayList<Byte>();
+
+        String s;
+        StringBuilder sb = new StringBuilder();
+
+
+
+
+
+        try(FileInputStream fin=new FileInputStream(inputFileName))
+        {
+            byte[] buffer = new byte[fin.available()];
+            // считаем файл в буфер
+            fin.read(buffer, 0, fin.available());
+            System.out.println("Размер файла: " + fin.available() + " байт(а)");
+            System.out.println("Содержимое файла:");
+            for(int i=0; i<buffer.length;i++){
+                System.out.print((char)buffer[i]);
+            }
+
+            os.write(String.format(RESPONSE, buffer.length, "").getBytes());
+            os.write(buffer);
+            os.flush();
+
+
+
+/*
+
+
+
+
+
+            int i=-1;
+            while((i=fin.read())!=-1){
+                //System.out.print((char)i);
+                //System.out.print(i);
+                //sb.append((char)i);
+                bytes.add();
+            }
+
+            s = sb.toString();
+            os.write(String.format(RESPONSE, s.length(), s).getBytes());
+            os.flush();
+            */
+        }
+        catch(IOException ex){
+            System.out.println(ex.getMessage());
+        }
+
+
+
+
+
+        /*
+        //char[] c = new char[10];
+        String s;
+
+        StringBuilder response = new StringBuilder();
+
+        try{
+            Reader fileReader = new InputStreamReader(new FileInputStream(inputFileName),"UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            while ((s = bufferedReader.readLine()) != null) {
+                response.append(s);
+            }
+
+            s=response.toString();
+            os.write(String.format(RESPONSE, s.length(), s).getBytes());
+            os.flush();
+
+        }
+        catch (IOException e){}
+
+*/
+
+
+
+/*
+        try {
+            try {
+                FileInputStream fis = new FileInputStream(inputFileName);
+                byte[] data = new byte[64 * 1024];
+                for (int read; (read = fis.read(data)) > -1; ){
+                    os.write(data, 0, read);
+                    System.out.println("[read]" + read);
+                }
+
+                os.flush();
+            } catch (FileNotFoundException e) {
+            }
+        }
+        catch (IOException e){
+        }
+        */
+    }
+
+
+
+    // посылаем ответ клиенту через OutputStream
+    @Override
     protected void sendResponse(HttpRequest httpRequest, OutputStream os) {
         //String inputFileName = "C:\\projects\\HttpServer3\\src\\main\\resources\\static\\test2.html";
         //String inputFileName = "src\\main\\resources\\static\\test2.html";
@@ -25,7 +131,7 @@ public class HelloWorldServer extends SocketProcessor {
         //System.out.println(httpRequest.getPath() + "[httpRequest.getPath()]");
 
 
-        char[] c = new char[10];
+        //char[] c = new char[10];
         String s;
 
         StringBuilder response = new StringBuilder();

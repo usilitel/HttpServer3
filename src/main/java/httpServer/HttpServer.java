@@ -13,6 +13,10 @@ public class HttpServer {
     //private static Logger log = Logger.getLogger(HttpServer.class.getName());
 
     public static void main (String... args) throws Throwable {
+
+        //System.out.println(String.format("aaaaa", 3, "sssss"));
+
+
         try (ServerSocket ss = new ServerSocket(Integer.parseInt(args[0]))) {
             System.out.println("Server started, please visit: http://localhost:" + args[0]);
             while (!Thread.currentThread().isInterrupted()) {
@@ -21,6 +25,7 @@ public class HttpServer {
                 new Thread(new HelloWorldServer(s)).start();
             }
         }
+
     }
 
     /*

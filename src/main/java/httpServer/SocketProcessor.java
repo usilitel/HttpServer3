@@ -26,7 +26,8 @@ public abstract class SocketProcessor implements Runnable {
                     "Connection: close\r\n\r\n%s";
 
 
-    abstract protected String mapRequest(HttpRequest httpRequest);
+    //abstract protected String mapRequest(HttpRequest httpRequest);
+    abstract protected void sendResponse(HttpRequest httpRequest, OutputStream os);
 
     private Socket s;
     private InputStream is;
@@ -39,10 +40,11 @@ public abstract class SocketProcessor implements Runnable {
     }
 
     public void run() {
+
         try {
-            writeResponse(
-                    mapRequest(getHttpRequest())
-            );
+            //System.out.println(mapRequest(getHttpRequest()));
+            //writeResponse(mapRequest(getHttpRequest()));
+            sendResponse(getHttpRequest(), os);
         } catch (Throwable t) {
                 /*do nothing*/
         } finally {
@@ -55,11 +57,14 @@ public abstract class SocketProcessor implements Runnable {
         System.out.println("Client processing finished");
     }
 
-
+/*
+    // посылаем ответ клиенту
     private void writeResponse(String s) throws Throwable {
         os.write(String.format(RESPONSE, s.length(), s).getBytes());
+        //os.write(RESPONSE.getBytes());
         os.flush();
     }
+*/
 
     private HttpRequest getHttpRequest() throws Throwable {
         BufferedReader br = new BufferedReader(new InputStreamReader(is));

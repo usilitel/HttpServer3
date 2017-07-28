@@ -197,12 +197,12 @@ public class HelloWorldServer extends SocketProcessor {
             byte[] buffer = new byte[fin.available()];
             // считаем файл в буфер
 
-            System.out.println("Размер файла: " + fin.available() + " байт(а)");
-            System.out.println("Содержимое файла:");
+//            System.out.println("Размер файла: " + fin.available() + " байт(а)");
+//            System.out.println("Содержимое файла:");
             fin.read(buffer, 0, fin.available());
-            for(int i=0; i<buffer.length;i++){
-                System.out.print((char)buffer[i]);
-            }
+//            for(int i=0; i<buffer.length;i++){
+//                System.out.print((char)buffer[i]);
+//            }
 
             byte[] buffer1 = new byte[100];
             byte[] buffer2 = new byte[81];

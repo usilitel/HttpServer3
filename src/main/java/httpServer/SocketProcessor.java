@@ -46,11 +46,19 @@ public abstract class SocketProcessor implements Runnable {
     public void run() {
 
         try {
+            HttpRequest httpRequest = getHttpRequest();
+            System.out.println(httpRequest.getPath());
+
+            if(httpRequest.getPath().equals("/test2.html/pic1.jpg"))
+                sendResponse2(httpRequest, os);
+            if(httpRequest.getPath().equals("/test2.html/"))
+                sendResponse3(httpRequest, os);
+
             //System.out.println(mapRequest(getHttpRequest()));
             //writeResponse(mapRequest(getHttpRequest()));
             //sendResponse(getHttpRequest(), os);
             //sendResponse2(getHttpRequest(), os);
-            sendResponse3(getHttpRequest(), os);
+            //sendResponse3(getHttpRequest(), os);
         } catch (Throwable t) {
                 /*do nothing*/
         } finally {

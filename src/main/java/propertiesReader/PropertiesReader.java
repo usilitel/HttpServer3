@@ -9,12 +9,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PropertiesReader {
-    private static Map<String, String> values = new TreeMap<>();
-    private static String fileName;
+    private  Map<String, String> values = new TreeMap<>();
+    private  String fileName;
 
 
-    public static void loadFile(String fileName){
-        PropertiesReader.fileName = fileName;
+    public  void loadFile(String fileName){
+        this.fileName = fileName;
         File file = new File(fileName);
 
         try{
@@ -51,14 +51,14 @@ public class PropertiesReader {
 
 
 
-    private static String getValueService(String key) throws IOException {
+    private  String getValueService(String key) throws IOException {
         String result = values.get(key);
         if (result == null)
             throw new IOException("в файле [" + fileName + "] нет ключа [" + key + "]");
         return result;
     }
 
-    public static String getValue(String key) {
+    public  String getValue(String key) {
         String result = "";
         try{
             result = getValueService(key);

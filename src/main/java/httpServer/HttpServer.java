@@ -16,12 +16,13 @@ public class HttpServer {
 
     public static void main (String... args) throws Throwable {
 
+        PropertiesReader MimeTypes = new PropertiesReader();
         System.out.println("---");
-        PropertiesReader.loadFile("src\\main\\resources\\config\\MimeTypes.properties");
+        MimeTypes.loadFile("src\\main\\resources\\config\\MimeTypes.properties");
 
         System.out.println("---");
         System.out.println("значение поля jpg:");
-        System.out.println(PropertiesReader.getValue("jpg"));
+        System.out.println(MimeTypes.getValue("jpg"));
 
         //System.out.println(String.format("aaaaa", 3, "sssss"));
 

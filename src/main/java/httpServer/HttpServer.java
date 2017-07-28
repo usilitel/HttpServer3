@@ -1,5 +1,7 @@
 package httpServer;
 
+import propertiesReader.PropertiesReader;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.InputStream;
@@ -13,6 +15,13 @@ public class HttpServer {
     //private static Logger log = Logger.getLogger(HttpServer.class.getName());
 
     public static void main (String... args) throws Throwable {
+
+        System.out.println("---");
+        PropertiesReader.loadFile("src\\main\\resources\\config\\MimeTypes.properties");
+
+        System.out.println("---");
+        System.out.println("значение поля jpg:");
+        System.out.println(PropertiesReader.getValue("jpg"));
 
         //System.out.println(String.format("aaaaa", 3, "sssss"));
 

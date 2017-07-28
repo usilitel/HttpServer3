@@ -224,6 +224,51 @@ public class HelloWorldServer extends SocketProcessor {
 
 
 
+    // посылаем ответ клиенту через OutputStream (формируем и посылаем ответ частями)
+    @Override
+    protected void sendResponse4(HttpRequest httpRequest, OutputStream os) {
+        String inputFileName = "C:\\projects\\HttpServer3\\src\\main\\resources\\static\\test2.html";
+
+        String RESPONSE1 =
+                "HTTP/1.1 200 OK\r\n" +
+                        "Content-Type: text/html\r\n" +
+                        //"Content-Type: image/jpeg\r\n" +
+                        "Content-Length: %d\r\n" +
+                        "Connection: close\r\n\r\n";
+
+        ArrayList<Byte> bytes = new ArrayList<Byte>();
+
+        String s;
+        StringBuilder sb = new StringBuilder();
+
+        try(FileInputStream fin=new FileInputStream(inputFileName))
+        {
+            byte[] buffer = new byte[fin.available()];
+            // считаем файл в буфер
+
+//            System.out.println("Размер файла: " + fin.available() + " байт(а)");
+//            System.out.println("Содержимое файла:");
+            //fin.read(buffer, 0, fin.available());
+//            for(int i=0; i<buffer.length;i++){
+//                System.out.print((char)buffer[i]);
+//            }
+
+            byte[] buffer1 = new byte[100];
+            byte[] buffer2 = new byte[81];
+
+            fin.read(buffer1, 0, 100);
+            os.write(String.format(RESPONSE1, 181).getBytes());
+            os.write(buffer1);
+            os.flush();
+
+            fin.read(buffer2, 0, 81);
+            os.write(buffer2);
+            os.flush();
+        }
+        catch(IOException ex){
+            System.out.println(ex.getMessage());
+        }
+    }
 
 
 

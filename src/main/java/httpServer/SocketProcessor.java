@@ -32,6 +32,7 @@ public abstract class SocketProcessor implements Runnable {
     abstract protected void sendResponse(HttpRequest httpRequest, OutputStream os);
     abstract protected void sendResponse2(HttpRequest httpRequest, OutputStream os);
     abstract protected void sendResponse3(HttpRequest httpRequest, OutputStream os);
+    abstract protected void sendResponse4(HttpRequest httpRequest, OutputStream os);
 
     private Socket s;
     private InputStream is;
@@ -52,7 +53,7 @@ public abstract class SocketProcessor implements Runnable {
             if(httpRequest.getPath().equals("/test2.html/pic1.jpg"))
                 sendResponse2(httpRequest, os);
             if(httpRequest.getPath().equals("/test2.html/"))
-                sendResponse3(httpRequest, os);
+                sendResponse4(httpRequest, os);
 
             //System.out.println(mapRequest(getHttpRequest()));
             //writeResponse(mapRequest(getHttpRequest()));

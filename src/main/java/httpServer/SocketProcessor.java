@@ -21,8 +21,8 @@ public abstract class SocketProcessor implements Runnable {
 
     public static final String RESPONSE =
             "HTTP/1.1 200 OK\r\n" +
-                    //"Content-Type: text/html\r\n" +
-                    "Content-Type: image/jpeg\r\n" +
+                    "Content-Type: text/html\r\n" +
+                    //"Content-Type: image/jpeg\r\n" +
                     "Content-Length: %d\r\n" +
                     "Connection: close\r\n\r\n%s";
 
@@ -31,6 +31,7 @@ public abstract class SocketProcessor implements Runnable {
     //abstract protected void sendResponse(HttpRequest httpRequest, OutputStream os);
     abstract protected void sendResponse(HttpRequest httpRequest, OutputStream os);
     abstract protected void sendResponse2(HttpRequest httpRequest, OutputStream os);
+    abstract protected void sendResponse3(HttpRequest httpRequest, OutputStream os);
 
     private Socket s;
     private InputStream is;
@@ -47,8 +48,9 @@ public abstract class SocketProcessor implements Runnable {
         try {
             //System.out.println(mapRequest(getHttpRequest()));
             //writeResponse(mapRequest(getHttpRequest()));
-            sendResponse2(getHttpRequest(), os);
             //sendResponse(getHttpRequest(), os);
+            //sendResponse2(getHttpRequest(), os);
+            sendResponse3(getHttpRequest(), os);
         } catch (Throwable t) {
                 /*do nothing*/
         } finally {

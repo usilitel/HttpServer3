@@ -18,6 +18,10 @@ public interface HttpRequest {
 
     String getBody();
 
+    String getFileExtension();
+
+    String getFileName();
+
     static HttpRequest from(HttpMethod httpMethod,
                             String path,
                             Map<String, String> params,
@@ -49,6 +53,21 @@ public interface HttpRequest {
             public String getBody() {
                 return body;
             }
+
+            @Override
+            public String getFileExtension(){
+                String path = this.getPath(); //"test2.html/";
+                String extension = path.substring(path.lastIndexOf(".")+1);
+                return extension;
+            }
+
+            @Override
+            public String getFileName(){
+                String path = this.getPath();
+                String fileName = path.substring(path.lastIndexOf("/") + 1);
+                return fileName;
+            }
+
         };
     }
 }

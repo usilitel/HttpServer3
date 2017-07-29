@@ -13,12 +13,22 @@ import java.util.logging.Logger;
 
 public class HttpServer {
     //private static Logger log = Logger.getLogger(HttpServer.class.getName());
+    static PropertiesReader MimeTypes = new PropertiesReader("src\\main\\resources\\config\\MimeTypes.properties");
+    static PropertiesReader ExtensionPaths = new PropertiesReader("src\\main\\resources\\config\\ExtensionPaths.properties");
+
+
+
 
     public static void main (String... args) throws Throwable {
 
-        PropertiesReader MimeTypes = new PropertiesReader();
-        System.out.println("---");
-        MimeTypes.loadFile("src\\main\\resources\\config\\MimeTypes.properties");
+        String a = "test2.html/";
+        String b = a.substring(a.lastIndexOf(".")+1);
+        System.out.println(b);
+
+
+
+        //System.out.println("---");
+        //MimeTypes.loadFile("src\\main\\resources\\config\\MimeTypes.properties");
 
         System.out.println("---");
         System.out.println("значение поля jpg:");

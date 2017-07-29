@@ -12,6 +12,9 @@ public class PropertiesReader {
     private  Map<String, String> values = new TreeMap<>();
     private  String fileName;
 
+    public PropertiesReader(String fileName){
+        loadFile(fileName);
+    }
 
     public  void loadFile(String fileName){
         this.fileName = fileName;

@@ -21,9 +21,17 @@ public class HelloWorldServer extends SocketProcessor {
 
 
 
+
+
+
+
+
+
+
     // посылаем ответ клиенту через OutputStream
     @Override
     protected void sendResponse(HttpRequest httpRequest, OutputStream os) {
+
         //String inputFileName = "C:\\projects\\HttpServer3\\src\\main\\resources\\static\\test2.html";
         //String inputFileName = "src\\main\\resources\\static\\test2.html";
         String inputFileName = "src/main/resources/static" + httpRequest.getPath();
@@ -282,6 +290,52 @@ public class HelloWorldServer extends SocketProcessor {
             os.write(buffer1);
             os.flush();
 
+        }
+        catch(IOException ex){
+            System.out.println(ex.getMessage());
+        }
+    }
+
+
+    // посылаем ответ клиенту через OutputStream (формируем и посылаем ответ частями)
+    @Override
+    protected void sendResponse5(HttpRequest httpRequest, OutputStream os) {
+        // получаем путь к файлу, который нужно отправить клиенту
+        //String fileName = httpRequest.getFileName();
+        String fileExtension = httpRequest.getFileExtension();
+        String inputFileName = HttpServer.ExtensionPaths.getValue(fileExtension) + httpRequest.getFileName();
+
+        String RESPONSE1 =
+                "HTTP/1.1 200 OK\r\n" +
+                        //"Content-Type: text/html\r\n" + HttpServer.MimeTypes.getValue(httpRequest.getFileExtension()) +
+                        "Content-Type: " + HttpServer.MimeTypes.getValue(fileExtension) + "\r\n" +
+                        //"Content-Type: image/jpeg\r\n" +
+                        "Content-Length: %d\r\n" +
+                        "Connection: close\r\n\r\n";
+
+
+        // получаем количество частей, на которые нужно разбить ответ
+        int cntThreads = 1;
+        try{
+            cntThreads = Integer.valueOf(httpRequest.getParams().get("cntThreads"));
+        }
+        catch (Exception e){}
+
+
+        // читаем файл и посылаем его клиенту
+        try(FileInputStream fin=new FileInputStream(inputFileName))
+        {
+            // вычисляем размер буфера
+            int bufferSize = fin.available()/cntThreads+1;
+            byte[] buffer = new byte[bufferSize];
+
+            os.write(String.format(RESPONSE1, fin.available()).getBytes()); // отправили заголовок ответа
+
+            while (fin.read(buffer, 0, bufferSize) > 0){ // отправляем тело ответа (разбиваем его на части)
+                os.write(buffer);
+                os.flush();
+                buffer = new byte[bufferSize]; // очищаем массив
+            }
         }
         catch(IOException ex){
             System.out.println(ex.getMessage());

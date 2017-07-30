@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-// класс для работы с пришедшим HTTP-запросом
+// РєР»Р°СЃСЃ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РїСЂРёС€РµРґС€РёРј HTTP-Р·Р°РїСЂРѕСЃРѕРј
 public class HttpRequest {
 
     private HttpMethod httpMethod;
@@ -18,14 +18,14 @@ public class HttpRequest {
 
 
     HttpRequest(InputStream is) throws Throwable {
-        // определяем метод http-запроса
+        // РѕРїСЂРµРґРµР»СЏРµРј РјРµС‚РѕРґ http-Р·Р°РїСЂРѕСЃР°
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String s = br.readLine().trim();
         String[] contentAndTail = s.split("\\s", 2);
         this.httpMethod = HttpMethod.valueOf(contentAndTail[0]);
         //System.out.println("httpMethod = " + httpMethod);
 
-        // определяем путь http-запроса
+        // РѕРїСЂРµРґРµР»СЏРµРј РїСѓС‚СЊ http-Р·Р°РїСЂРѕСЃР°
         contentAndTail = contentAndTail[1].split("[?\\s]", 2);
         this.path = contentAndTail[0];
         if (path.equals("/"))
@@ -34,13 +34,13 @@ public class HttpRequest {
             path = path.substring(0,path.length()-1);
         //System.out.println("path = " + path);
 
-        // определяем параметры http-запроса
+        // РѕРїСЂРµРґРµР»СЏРµРј РїР°СЂР°РјРµС‚СЂС‹ http-Р·Р°РїСЂРѕСЃР°
         this.params = contentAndTail[1].startsWith("HTTP") ?
                 Collections.emptyMap() :
                 getParams(contentAndTail[1].split("\\s", 2)[0]);
         //System.out.println("params = " + params);
 
-        // определяем headers http-запроса
+        // РѕРїСЂРµРґРµР»СЏРµРј headers http-Р·Р°РїСЂРѕСЃР°
         this.headers = new HashMap<>();
         while ((s = br.readLine()) != null && !s.trim().isEmpty()) {
             String[] header = s.split(":\\s", 2);
@@ -48,7 +48,7 @@ public class HttpRequest {
         }
         //System.out.println("headers = " + headers);
 
-        // определяем body http-запроса
+        // РѕРїСЂРµРґРµР»СЏРµРј body http-Р·Р°РїСЂРѕСЃР°
         StringBuilder body = new StringBuilder();
         if (httpMethod == HttpMethod.POST || httpMethod == HttpMethod.PUT)
             while (br.ready() && (s = br.readLine()) != null)
@@ -58,7 +58,7 @@ public class HttpRequest {
 
     }
 
-    // получаем map из строки вида param=value&param=value
+    // РїРѕР»СѓС‡Р°РµРј map РёР· СЃС‚СЂРѕРєРё РІРёРґР° param=value&param=value
     private Map<String, String> getParams(String s) {
         Map<String, String> params = new HashMap<>();
         for (String param : s.split("&")) {

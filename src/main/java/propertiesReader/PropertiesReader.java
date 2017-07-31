@@ -43,7 +43,7 @@ public class PropertiesReader {
                 else
                     break;
             }
-            System.out.println("файл [" + fileName + "] загружен.");
+            System.out.println("file [" + fileName + "] loaded.");
         }
         catch (Exception e){
             System.out.println("Ошибка: " + e.getMessage());

@@ -1,5 +1,5 @@
 package httpServer;
-/*
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,27 +10,26 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.stream.Collectors;
 
-import static httpServer.SocketProcessor.RESPONSE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
-*/
+
 public class HttpServerTest {
 
-//    public static final int PORT = 8080;
-//    public static final String REQUEST = "GET / HTTP/1.1\r\n" +
-//            "Host: localhost:8080\r\n" +
-//            "Connection: keep-alive\r\n" +
-//            "Pragma: no-cache\r\n" +
-//            "Cache-Control: no-cache\r\n" +
-//            "Upgrade-Insecure-Requests: 1\r\n" +
-//            "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 YaBrowser/17.6.1.745 Yowser/2.5 Safari/537.36\r\n" +
-//            "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\r\n" +
-//            "DNT: 1\r\n" +
-//            "Accept-Encoding: gzip, deflate, sdch, br\r\n" +
-//            "Accept-Language: ru,en;q=0.8\r\n" +
-//            "X-Compress: null\r\n\r\n";
-/*
+    public static final int PORT = 8080;
+    public static final String REQUEST = "GET /%s HTTP/1.1\r\n" +
+            "Host: localhost:8080\r\n" +
+            "Connection: keep-alive\r\n" +
+            "Pragma: no-cache\r\n" +
+            "Cache-Control: no-cache\r\n" +
+            "Upgrade-Insecure-Requests: 1\r\n" +
+            "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 YaBrowser/17.6.1.745 Yowser/2.5 Safari/537.36\r\n" +
+            "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\r\n" +
+            "DNT: 1\r\n" +
+            "Accept-Encoding: gzip, deflate, sdch, br\r\n" +
+            "Accept-Language: ru,en;q=0.8\r\n" +
+            "X-Compress: null\r\n\r\n";
+
     static Thread serverThread;
 
 
@@ -56,30 +55,66 @@ public class HttpServerTest {
 
 
     @Test
-    public void ping() throws Throwable {
+    public void ping1() throws Throwable {
 
+
+        // посылаем запрос
         try (Socket socket = new Socket("localhost", PORT);
              OutputStream outputStream = socket.getOutputStream();
              BufferedReader reader = new BufferedReader(
                      new InputStreamReader(
                              socket.getInputStream()))) {
 
-            outputStream.write(REQUEST.getBytes());
-//            outputStream.close();
 
-            String response = reader.lines()
-//                    .filter(s -> s.trim().length() > 0)
-                    .collect(Collectors.joining("\r\n"));
+            String path = "test1.html";
+            outputStream.write(String.format(REQUEST, path).getBytes());
+            String response = reader.lines().collect(Collectors.joining("\r\n"));
 
-            String s = HelloWorldServer.HTML;
-            assertThat(response, is(String.format(RESPONSE, s.length(), s)));
+            // проверяем ответ
+            String RESPONSE =
+                    "HTTP/1.1 200 OK\r\n" +
+                            "Content-Type: text/html\r\n" +
+                            "Content-Length: %d\r\n" +
+                            "Connection: close\r\n\r\n%s";
 
-//            String line;
-//            while ((line = reader.readLine()) != null && !line.trim().isEmpty()) {
-//                log.info(line);
-//            }
+            String s = "<html><head><meta charset=\"utf-8\"/></head><body><h1>hello</h1></body></html>";;
+
+            assertThat(response.trim(), is(String.format(RESPONSE, s.length(), s)));
+
         }
-
     }
-    */
+
+
+    @Test
+    public void ping2() throws Throwable {
+
+
+        // посылаем запрос
+        try (Socket socket = new Socket("localhost", PORT);
+             OutputStream outputStream = socket.getOutputStream();
+             BufferedReader reader = new BufferedReader(
+                     new InputStreamReader(
+                             socket.getInputStream()))) {
+
+
+            String path = "test1.html/?cntThreads=5";
+            outputStream.write(String.format(REQUEST, path).getBytes());
+            String response = reader.lines().collect(Collectors.joining("\r\n"));
+
+            // проверяем ответ
+            String RESPONSE =
+                    "HTTP/1.1 200 OK\r\n" +
+                            "Content-Type: text/html\r\n" +
+                            "Content-Length: %d\r\n" +
+                            "Connection: close\r\n\r\n%s";
+
+            String s = "<html><head><meta charset=\"utf-8\"/></head><body><h1>hello</h1></body></html>";;
+
+            assertThat(response.trim(), is(String.format(RESPONSE, s.length(), s)));
+
+        }
+    }
+
+
+
 }

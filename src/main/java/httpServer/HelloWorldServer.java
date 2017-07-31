@@ -23,6 +23,7 @@ public class HelloWorldServer implements Runnable {
             // обрабатываем запрос
             HttpRequest httpRequest =  new HttpRequest(is); //
             System.out.println("Request path: " + httpRequest.getPath());
+            //System.out.println("Request params: " + httpRequest.getParams());
 
             // посылаем ответ
             sendResponse(httpRequest, os);
@@ -56,14 +57,16 @@ public class HelloWorldServer implements Runnable {
             cntThreads = Integer.valueOf(httpRequest.getParams().get("cntThreads"));
         }
         catch (Exception e){}
+        System.out.println("cntThreads = " + cntThreads);
 
 
         // читаем файл и посылаем его клиенту
         try(FileInputStream fin=new FileInputStream(inputFileName))
         {
             // вычисляем размер буфера
-            int bufferSize = fin.available()/cntThreads+1;
+            int bufferSize = fin.available()/cntThreads + ((fin.available()%cntThreads==0) ? 0 : 1); // если ответный файл не делится нацело - добавляем к буферу 1 байт
             byte[] buffer = new byte[bufferSize];
+            //System.out.println("bufferSize = " + bufferSize);
 
             os.write(String.format(responseHeader, fin.available()).getBytes()); // отправили заголовок ответа
 

@@ -54,9 +54,10 @@ public class HttpServerTest {
 
 
 
-    @Test
-    public void ping1() throws Throwable {
 
+    @Test
+    // проверяем возвращаемую страницу (test1.html)
+    public void ping() throws Throwable {
 
         // посылаем запрос
         try (Socket socket = new Socket("localhost", PORT);
@@ -86,8 +87,8 @@ public class HttpServerTest {
 
 
     @Test
-    public void ping2() throws Throwable {
-
+    // проверяем возвращаемую страницу (test1.html), ответ разбит на несколько частей
+    public void pingThreads() throws Throwable {
 
         // посылаем запрос
         try (Socket socket = new Socket("localhost", PORT);
